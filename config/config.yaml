@@ -1,0 +1,10 @@
+mysql:
+  url: mysql.test.com
+  port: 3306
+  dbName: test
+  user: test
+  passwd: test
+
+redis:
+  addr: redis.test.com:6379
+  passwd: 
