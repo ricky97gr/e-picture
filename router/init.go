@@ -2,6 +2,7 @@ package router
 
 import (
 	//"my-admin/middleware"
+	// "my-admin/middleware"
 	"my-admin/pkg/response"
 	"net/http"
 
@@ -15,7 +16,7 @@ type Router struct {
 func StartServer() error {
 	// engine := gin.New()
 
-	// engine.Use(middleware.Logger(), middleware.Recovery())
+	// engine.Use(middleware.Logger(), gin.Recovery())
 	engine := gin.Default()
 	//TODO:(forgocode) need to update path and dir
 	engine.StaticFS("/file", http.Dir(""))
@@ -25,13 +26,10 @@ func StartServer() error {
 		response.Success(ctx, "system is ready")
 	})
 	r.InitBaseRouter()
-	//engine.POST("login")
-
-	// InitRouter()
-	// InitRouter()
-	// baseRouter := engine.Group("base")
-
-	// systemGroup := engine.Group("system")
+	//桶的增删改查
+	//图片的增删改查
+	//用户的增删改查
+	//权限设置
 
 	return engine.Run(":8080")
 
