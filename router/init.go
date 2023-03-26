@@ -23,9 +23,10 @@ func StartServer() error {
 	r := new(Router)
 	r.RouterGroup = engine.RouterGroup
 	engine.GET("/health", func(ctx *gin.Context) {
-		response.Success(ctx, "system is ready")
+		response.Success(ctx, "system is ready", 1)
 	})
 	r.InitBaseRouter()
+
 	//桶的增删改查
 	//图片的增删改查
 	//用户的增删改查

@@ -5,6 +5,7 @@ import (
 	"my-admin/global"
 	"my-admin/model"
 	"my-admin/pkg/errs"
+	"my-admin/pkg/password"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -31,7 +32,8 @@ func Register(user model.User) error {
 		return errs.ErrUserExist
 	}
 	user.UUID = uuid.New().String()
-	user.Password = ""
+	//TODO:forgocode need generated passws
+	user.Password = password.GetPassword(user.Password)
 	if insertUser(user) != nil {
 		return errs.ErrDbError
 	}
@@ -42,4 +44,13 @@ func IsUserExist(user model.User) bool {
 	var record model.User
 	result := global.DBClient.Where("phone = ?", user.Phone).First(&record)
 	return errors.Is(result.Error, gorm.ErrRecordNotFound)
+}
+
+func CheckPasswdByUser(user model.User) (string, bool) {
+	var record model.User
+	result := global.DBClient.Where("phone = ?", user.Phone).First(&record)
+	if result.Error != nil {
+		return "", false
+	}
+	return record.UserName, password.GetPassword(user.Password) == record.Password
 }

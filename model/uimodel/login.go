@@ -1,10 +1,10 @@
 package uimodel
 
 type Login struct {
-	//phone
-	UserName string `json:"userName"`
-	ID       string `json:"id"`
-	Passwd   string `json:"passwd"`
+	Phone string `json:"phone"`
+	// UserName string `json:"userName"`
+	// ID       string `json:"id"`
+	Passwd string `json:"passwd"`
 }
 
 type Register struct {

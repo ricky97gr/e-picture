@@ -7,6 +7,7 @@ import (
 	"my-admin/pkg/mysql"
 	"my-admin/pkg/redis"
 	"my-admin/router"
+	"my-admin/service"
 )
 
 func main() {
@@ -44,6 +45,7 @@ func main() {
 	if err != nil {
 		global.Logger.Errorf("failed to init redis client, err:%+v\n", err)
 	}
+	service.RegisterTable(global.DBClient)
 
 	err = router.StartServer()
 	if err != nil {

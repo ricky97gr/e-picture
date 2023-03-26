@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Success(ctx *gin.Context, detail ...interface{}) {
+func Success(ctx *gin.Context, result interface{}, total int, detail ...interface{}) {
 
 	ctx.JSON(
 		http.StatusOK,
@@ -14,6 +14,8 @@ func Success(ctx *gin.Context, detail ...interface{}) {
 			"code":   200,
 			"msg":    "handle successfully",
 			"detail": detail,
+			"result": result,
+			"total":  total,
 		})
 }
 

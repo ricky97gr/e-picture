@@ -12,6 +12,6 @@ func (r *Router) InitBaseRouter() {
 
 	userGroup.POST("/register", v1.Register)
 	userGroup.POST("/login", v1.Login)
-	userGroup.GET("/log")
+	userGroup.GET("/operationLog", v1.GetOperationLog)
 
 }

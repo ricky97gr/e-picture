@@ -16,6 +16,7 @@ func Logger() gin.HandlerFunc {
 		ctx.Next()
 		raw := ctx.Request.URL.RawQuery
 		status := ctx.Writer.Status()
-		global.Logger.Debugf("src ip: %s | path: %s | method: %s | consume: %+v | payload: %s | status: %d", host, path, method, time.Now().Sub(start), raw, status)
+		global.Logger.Debugf("src ip: %s | path: %s | method: %s | consume: %+v | payload: %s | status: %d", host, path, method, time.Since(start), raw, status)
+
 	}
 }

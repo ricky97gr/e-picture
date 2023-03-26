@@ -13,6 +13,7 @@ func RegisterTable(db *gorm.DB) {
 		model.Bucket{},
 		model.User{},
 		model.Photo{},
+		model.OperationLog{},
 	)
 	if err != nil {
 		global.Logger.Errorf("failed to register mysql table, err:%+v\n", err)
