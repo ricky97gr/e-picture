@@ -21,5 +21,6 @@ func (r *Router) InitSystemRouter() {
 
 	userGroup.GET("/operationLog", v1.GetOperationLog)
 	userGroup.GET("/info", v1.GetUserInfo)
+	userGroup.POST("/upload", v1.UpLoadPhoto)
 
 }
