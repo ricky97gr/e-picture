@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"my-admin/config"
 	"my-admin/global"
 	"my-admin/logs"
+	"my-admin/model"
 	"my-admin/pkg/mysql"
 	"my-admin/pkg/redis"
 	"my-admin/router"
@@ -46,6 +48,13 @@ func main() {
 		global.Logger.Errorf("failed to init redis client, err:%+v\n", err)
 	}
 	service.RegisterTable(global.DBClient)
+	fmt.Println(service.Register(model.User{
+		UserName: "admin",
+		Phone:    "13888888888",
+		Email:    "test@163.com",
+		Password: "123456",
+		Avatar:   "http://minio.test.com:9000/test1/1677742742506.jpg",
+	}))
 
 	err = router.StartServer()
 	if err != nil {

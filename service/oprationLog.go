@@ -31,3 +31,7 @@ func GetOperationLog() []model.OperationLog {
 func insertOperationLog(log model.OperationLog) {
 	global.DBClient.Create(&log)
 }
+
+func deleteOperationLogByUUID(uuid string) {
+	//global.DBClient.Delete()
+}

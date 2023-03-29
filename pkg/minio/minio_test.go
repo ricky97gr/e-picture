@@ -11,7 +11,7 @@ import (
 )
 
 func TestInitMinio(t *testing.T) {
-	c, err := InitMinio("10.182.34.112", 9000, "K62MVxUhRgCO0dtd", "jH82hj7TvFewMQ8zCLVAfv6tBt6s4xuT", false)
+	c, err := InitMinio("minio.test.com", 9000, "K62MVxUhRgCO0dtd", "jH82hj7TvFewMQ8zCLVAfv6tBt6s4xuT", false)
 	if err != nil {
 		fmt.Printf("failed to init minio client, err: %+v\n", err)
 		return

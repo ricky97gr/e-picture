@@ -26,15 +26,19 @@ func Auth() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
 		if token == "" {
+			ctx.Abort()
 			response.Failed(ctx, response.ErrAuth)
 			return
 		}
 		if !isTokenExist(token) {
+			ctx.Abort()
 			response.Failed(ctx, response.ErrAuth)
 			return
 		}
 		if restoreToken(token) != nil {
+			ctx.Abort()
 			response.Failed(ctx, response.ErrRedis)
+			return
 		}
 		claims, err := parseToken(token)
 		if err != nil {
@@ -49,7 +53,7 @@ func Auth() gin.HandlerFunc {
 	}
 }
 
-func GenerateToken(userName, phone string) (string, error) {
+func GenerateToken(phone, userName string) (string, error) {
 	claim := &Claims{
 		UserName: userName,
 		Phone:    phone,

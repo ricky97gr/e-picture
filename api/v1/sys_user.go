@@ -79,3 +79,9 @@ func Login(c *gin.Context) {
 		})
 
 }
+
+func GetUserInfo(ctx *gin.Context) {
+	phone := ctx.Request.Header.Get("userID")
+	user := service.GetUserByPhone(phone)
+	response.Success(ctx, user, 1)
+}

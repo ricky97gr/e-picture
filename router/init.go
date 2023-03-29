@@ -26,6 +26,7 @@ func StartServer() error {
 		response.Success(ctx, "system is ready", 1)
 	})
 	r.InitBaseRouter()
+	r.InitSystemRouter()
 
 	//桶的增删改查
 	//图片的增删改查

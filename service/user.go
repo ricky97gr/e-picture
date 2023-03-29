@@ -43,7 +43,7 @@ func Register(user model.User) error {
 func IsUserExist(user model.User) bool {
 	var record model.User
 	result := global.DBClient.Where("phone = ?", user.Phone).First(&record)
-	return errors.Is(result.Error, gorm.ErrRecordNotFound)
+	return !errors.Is(result.Error, gorm.ErrRecordNotFound)
 }
 
 func CheckPasswdByUser(user model.User) (string, bool) {
@@ -53,4 +53,10 @@ func CheckPasswdByUser(user model.User) (string, bool) {
 		return "", false
 	}
 	return record.UserName, password.GetPassword(user.Password) == record.Password
+}
+
+func GetUserByPhone(phone string) model.User {
+	var user model.User
+	global.DBClient.Where("phone = ?", phone).First(&user)
+	return user
 }

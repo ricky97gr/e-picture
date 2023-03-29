@@ -25,7 +25,7 @@ func Failed(ctx *gin.Context, errCode int32, detail ...interface{}) {
 		http.StatusOK,
 		gin.H{
 			"code":   errCode,
-			"msg":    "",
+			"msg":    errCodeMap[errCode].msgCn,
 			"detail": detail,
 		})
 }

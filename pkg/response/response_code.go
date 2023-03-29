@@ -9,7 +9,7 @@ const (
 	ErrUserNameOrPassword
 )
 
-var errCode = map[int32]struct {
+var errCodeMap = map[int32]struct {
 	msgCn string
 	msgEn string
 }{
