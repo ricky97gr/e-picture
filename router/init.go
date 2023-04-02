@@ -27,6 +27,7 @@ func StartServer() error {
 	})
 	r.InitBaseRouter()
 	r.InitSystemRouter()
+	r.InitBucketRouter()
 
 	//桶的增删改查
 	//图片的增删改查

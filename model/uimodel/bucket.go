@@ -6,4 +6,5 @@ type Bucket struct {
 	CapacityMode string `json:"capacityMode"`
 	Number       int32  `json:"number"`
 	Status       string `json:"status"`
+	ID           int32  `json:"id"`
 }

@@ -8,3 +8,12 @@ mysql:
 redis:
   addr: redis.test.com:6379
   passwd: 
+
+# EgmIvU8p3wfsSGK0
+# qI5XuHnKTxpZFaMVfygKpem5dILNctMM
+
+minio:
+  ip: minio.test.com
+  port: 9000
+  accessKeyID: EgmIvU8p3wfsSGK0
+  secretAccessKey: qI5XuHnKTxpZFaMVfygKpem5dILNctMM

@@ -27,7 +27,7 @@ type RedisConfig struct {
 type MinioConfig struct {
 	IP              string `yaml:"ip" json:"ip"`
 	Port            uint16 `yaml:"port" json:"port"`
-	AssessKeyID     string `yaml:"accessKeyID" json:"accessKeyID"`
+	AccessKeyID     string `yaml:"accessKeyID" json:"accessKeyID"`
 	SecretAccessKey string `yaml:"secretAccessKey" json:"secretAccessKey"`
 }
 

@@ -41,3 +41,15 @@ func TestInitMinio(t *testing.T) {
 	}
 	fmt.Println("Uploaded:", "my-objectname", " of size: ", result, "Successfully.")
 }
+
+func TestCreateBucket(t *testing.T) {
+	c, err := InitMinio("minio.test.com", 9000, "EgmIvU8p3wfsSGK0", "qI5XuHnKTxpZFaMVfygKpem5dILNctMM", false)
+	if err != nil {
+		fmt.Printf("failed to init minio client, err: %+v\n", err)
+		return
+	}
+	err = c.MakeBucket(context.Background(), "test", minio.MakeBucketOptions{ObjectLocking: false})
+	if err != nil {
+		fmt.Printf("failed to create bucket, err: %+v\n", err)
+	}
+}

@@ -19,6 +19,7 @@ func (b *Bucket) Covert(bucket uimodel.Bucket) {
 	b.CapacityMode = bucket.CapacityMode
 	b.Number = bucket.Number
 	b.Status = bucket.Status
+	b.ID = int64(bucket.ID)
 }
 
 func (Bucket) TableName() string {

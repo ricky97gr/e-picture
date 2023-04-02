@@ -7,4 +7,5 @@ var (
 	ErrDbError       = fmt.Errorf("db error")
 	ErrOutOfCapacity = fmt.Errorf("out of capacity")
 	ErrBucketOwner   = fmt.Errorf("you are not the bucket owner")
+	ErrBucketExisted = fmt.Errorf("the bucket name is existed")
 )

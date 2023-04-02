@@ -6,6 +6,7 @@ import (
 	"my-admin/global"
 	"my-admin/logs"
 	"my-admin/model"
+	"my-admin/pkg/minio"
 	"my-admin/pkg/mysql"
 	"my-admin/pkg/redis"
 	"my-admin/router"
@@ -46,6 +47,11 @@ func main() {
 	global.RedisClient, err = redis.InitRedis(global.Config.Redis.Addr, global.Config.Redis.Passwd)
 	if err != nil {
 		global.Logger.Errorf("failed to init redis client, err:%+v\n", err)
+	}
+
+	global.MinioClient, err = minio.InitMinio(global.Config.Minio.IP, global.Config.Minio.Port, global.Config.Minio.AccessKeyID, global.Config.Minio.SecretAccessKey, false)
+	if err != nil {
+		global.Logger.Errorf("failed to init minio client, err:%+v\n", err)
 	}
 	service.RegisterTable(global.DBClient)
 	fmt.Println(service.Register(model.User{
