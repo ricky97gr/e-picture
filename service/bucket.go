@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"my-admin/global"
 	"my-admin/model"
 	"my-admin/pkg/errs"
@@ -13,6 +14,29 @@ import (
 
 const (
 	BucketCapacity = 32
+)
+
+type BucketPolicy string
+
+const (
+	BucketPolicyReadOnly = `{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::test"]},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:ListBucket"],"Resource":["arn:aws:s3:::%s"],"Condition":{"StringEquals":{"s3:prefix":["*"]}}},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetObject"],"Resource":["arn:aws:s3:::%s/**"]}]}`
+	// BucketPolicyWriteRead = `
+	// {
+	// 	"Version": "2012-10-17",
+	// 	"Statement": [
+	// 		{
+	// 			"Effect": "Allow",
+	// 			"Action": [
+	// 				"s3:GetBucketLocation",
+	// 				"s3:GetObject"
+	// 			],
+	// 			"Resource": [
+	// 				"arn:aws:s3:::*"
+	// 			]
+	// 		}
+	// 	]
+	// }
+	// `
 )
 
 func CreateBucket(bucket model.Bucket) error {
@@ -82,10 +106,18 @@ func getBucketByID(id int64) *model.Bucket {
 
 func createStoreBucket(bucketName string) error {
 	ctx := context.Background()
-	return global.MinioClient.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{ObjectLocking: false})
+	err := global.MinioClient.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{ObjectLocking: false})
+	if err != nil {
+		return err
+	}
+	return addPolicyToBucket(bucketName, fmt.Sprintf(BucketPolicyReadOnly, bucketName, bucketName))
 }
 
 func deleteStoreBucket(bucketName string) error {
 	ctx := context.Background()
 	return global.MinioClient.RemoveBucket(ctx, bucketName)
+}
+
+func addPolicyToBucket(bucketName, policy string) error {
+	return global.MinioClient.SetBucketPolicy(context.Background(), bucketName, policy)
 }

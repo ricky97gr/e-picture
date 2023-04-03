@@ -53,3 +53,25 @@ func TestCreateBucket(t *testing.T) {
 		fmt.Printf("failed to create bucket, err: %+v\n", err)
 	}
 }
+
+func TestBucketPolicy(t *testing.T) {
+
+	c, err := InitMinio("minio.test.com", 9000, "EgmIvU8p3wfsSGK0", "qI5XuHnKTxpZFaMVfygKpem5dILNctMM", false)
+	if err != nil {
+		fmt.Printf("failed to init minio client, err: %+v\n", err)
+		return
+	}
+	fmt.Println(c.GetBucketPolicy(context.Background(), "test"))
+	// fmt.Println(c.GetBucketPolicy(context.Background(), "test1"))
+}
+
+func TestAddBucketPolicy(t *testing.T) {
+	c, err := InitMinio("minio.test.com", 9000, "EgmIvU8p3wfsSGK0", "qI5XuHnKTxpZFaMVfygKpem5dILNctMM", false)
+	if err != nil {
+		fmt.Printf("failed to init minio client, err: %+v\n", err)
+		return
+	}
+	policy := `{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetBucketLocation","s3:ListBucket"],"Resource":["arn:aws:s3:::%s"]},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:ListBucket"],"Resource":["arn:aws:s3:::%s"],"Condition":{"StringEquals":{"s3:prefix":["*"]}}},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetObject"],"Resource":["arn:aws:s3:::%s/*","arn:aws:s3:::%s/**"]}]}`
+
+	fmt.Println(c.SetBucketPolicy(context.Background(), "test", fmt.Sprintf(policy, "test", "test", "test", "test")))
+}
