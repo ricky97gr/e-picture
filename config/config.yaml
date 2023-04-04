@@ -15,5 +15,5 @@ redis:
 minio:
   ip: minio.test.com
   port: 9000
-  accessKeyID: EgmIvU8p3wfsSGK0
-  secretAccessKey: qI5XuHnKTxpZFaMVfygKpem5dILNctMM
+  accessKeyID: K62MVxUhRgCO0dtd
+  secretAccessKey: jH82hj7TvFewMQ8zCLVAfv6tBt6s4xuT

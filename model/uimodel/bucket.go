@@ -2,9 +2,11 @@ package uimodel
 
 type Bucket struct {
 	Name         string `json:"name"`
-	Size         string `json:"size"`
+	TotalSize    string `json:"totalSize"`
 	CapacityMode string `json:"capacityMode"`
-	Number       int32  `json:"number"`
+	TotalNumber  int32  `json:"totalNumber"`
 	Status       string `json:"status"`
 	ID           int32  `json:"id"`
+	UsedSize     string `json:"usedSize"`
+	UsedNumber   int32  `json:"usedNumber"`
 }

@@ -9,4 +9,5 @@ func (r *Router) InitPhotoRouter() {
 	photoGroup := r.Group("photo")
 	photoGroup.Use(middleware.Auth())
 	photoGroup.GET("/list", v1.ListPhoto)
+	photoGroup.DELETE("/delete", v1.DeletePhoto)
 }

@@ -59,7 +59,9 @@ func main() {
 		Phone:    "13888888888",
 		Email:    "test@163.com",
 		Password: "123456",
-		Avatar:   "http://minio.test.com:9000/test1/1677742742506.jpg",
+		Avatar:   "http://minio.test.com:9000/test/login.jpg",
+		Role:     "manager",
+		Theme:    "light",
 	}))
 
 	err = router.StartServer()

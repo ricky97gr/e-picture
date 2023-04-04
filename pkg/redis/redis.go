@@ -17,7 +17,8 @@ func InitRedis(addr, passwd string) (*redis.Client, error) {
 	})
 	_, err := client.Ping().Result()
 	if err == nil {
-		client.FlushDB()
+		//TODO: 清除所有的redis token
+		//client.FlushDB()
 	}
 	return client, err
 }

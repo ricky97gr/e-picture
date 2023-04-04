@@ -1,8 +1,11 @@
 package service
 
 import (
+	"errors"
 	"my-admin/global"
 	"my-admin/model"
+
+	"gorm.io/gorm"
 )
 
 func CreatePhoto(photo model.Photo) error {
@@ -29,4 +32,10 @@ func ListPhoto() []model.Photo {
 	var photos []model.Photo
 	global.DBClient.Find(&photos)
 	return photos
+}
+
+func GetPhotoByUUID(uuid string) (model.Photo, bool) {
+	var photo model.Photo
+	result := global.DBClient.Where("uuid = ?", uuid).First(&photo)
+	return photo, !errors.Is(result.Error, gorm.ErrRecordNotFound)
 }

@@ -70,6 +70,26 @@ func UpLoadPhoto(ctx *gin.Context) {
 }
 
 func DeletePhoto(ctx *gin.Context) {
+	var info model.Photo
+	err := ctx.ShouldBindJSON(&info)
+	if err != nil {
+		response.Failed(ctx, response.ErrStruct)
+		return
+	}
+	photo, ok := service.GetPhotoByUUID(info.UUID)
+	if !ok {
+		response.Failed(ctx, response.ErrRecordNotFound)
+		return
+	}
+	err = global.MinioClient.RemoveObject(context.Background(), photo.BucketName, photo.Name, minio.RemoveObjectOptions{})
+	if err != nil {
+		global.Logger.Errorf("failed to remove file, info:%+v, err:%+v\n", photo, err)
+	}
+	err = service.DeletePhoto(photo)
+	if err != nil {
+		global.Logger.Errorf("failed to delete file record from db, info:%+v, err:%+v\n", photo, err)
+	}
+	response.Success(ctx, "删除成功", 1)
 
 }
 

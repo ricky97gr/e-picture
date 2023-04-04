@@ -7,6 +7,7 @@ const (
 	ErrAuth
 	ErrRedis
 	ErrUserNameOrPassword
+	ErrRecordNotFound
 )
 
 var errCodeMap = map[int32]struct {
@@ -21,4 +22,5 @@ var errCodeMap = map[int32]struct {
 	ErrAuth:               {msgCn: "认证信息有误，请重新登录", msgEn: "err auth info, please login again"},
 	ErrRedis:              {msgCn: "redis数据库有误", msgEn: "error redis db"},
 	ErrUserNameOrPassword: {msgCn: "用户名或者密码有误", msgEn: "username or password is wrong"},
+	ErrRecordNotFound:     {msgCn: "查询记录不存在", msgEn: "the record in db is not found"},
 }
