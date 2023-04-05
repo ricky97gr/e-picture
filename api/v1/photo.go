@@ -26,10 +26,8 @@ func UpLoadPhoto(ctx *gin.Context) {
 	photoName := form.Value["name"][0]
 	bucketName := form.Value["bucketName"][0]
 	if bucketName == "" {
-		if len(form.File["file"]) != 1 {
-			response.Failed(ctx, response.ErrStruct, "桶名称不能为空")
-			return
-		}
+		response.Failed(ctx, response.ErrStruct, "桶名称不能为空")
+		return
 	}
 
 	if photoName != "" {
@@ -40,6 +38,7 @@ func UpLoadPhoto(ctx *gin.Context) {
 	}
 
 	files := form.File["file"]
+	//BUG: 上传多个文件时有可能会出现同名的照片
 	for _, file := range files {
 		fmt.Println(file.Filename)
 		var newFile string
@@ -62,7 +61,9 @@ func UpLoadPhoto(ctx *gin.Context) {
 			PutObjectOptions{})
 		if err != nil {
 			fmt.Printf("failed to upload file to minio, err:%+v\n", err)
+			continue
 		}
+		service.SendOperationLog(ctx, "Photo", fmt.Sprintf("上传了照片 %s", newFile))
 	}
 
 	response.Success(ctx, "上传成功", len(files))
@@ -89,6 +90,7 @@ func DeletePhoto(ctx *gin.Context) {
 	if err != nil {
 		global.Logger.Errorf("failed to delete file record from db, info:%+v, err:%+v\n", photo, err)
 	}
+	service.SendOperationLog(ctx, "Photo", fmt.Sprintf("删除了照片 %s", photo.Name))
 	response.Success(ctx, "删除成功", 1)
 
 }
@@ -96,4 +98,13 @@ func DeletePhoto(ctx *gin.Context) {
 func ListPhoto(ctx *gin.Context) {
 	photos := service.ListPhoto()
 	response.Success(ctx, photos, len(photos))
+}
+
+func GetPhotoCount(ctx *gin.Context) {
+	count, err := service.GetPhotoCount()
+	if err != nil {
+		response.Failed(ctx, response.ErrDB)
+		return
+	}
+	response.Success(ctx, "", int(count))
 }

@@ -24,12 +24,13 @@ func CreateBucket(ctx *gin.Context) {
 	userName := ctx.Request.Header.Get("userName")
 	bucket.OwnerID = userID
 	bucket.OwnerName = userName
+	//TODO: 需要区分db还是minio的error
 	err = service.CreateBucket(bucket)
 	if err != nil {
 		response.Failed(ctx, response.ErrDB, err)
 		return
 	}
-	service.SendOperationLog(userName, userID, "Bucket", fmt.Sprintf("创建存储桶{ %s }", bucket.Name))
+	service.SendOperationLog(ctx, "Bucket", fmt.Sprintf("创建存储桶{ %s }", bucket.Name))
 	response.Success(ctx, "create bucket successfully", 1)
 }
 
@@ -52,14 +53,24 @@ func DeleteBucket(ctx *gin.Context) {
 	var bucket model.Bucket
 	bucket.Covert(info)
 	userID := ctx.Request.Header.Get("userID")
-	userName := ctx.Request.Header.Get("userName")
 	bucket.OwnerID = userID
 	err = service.DeleteBucket(bucket)
+	//TODO: 需要区分db还是minio的error
 	if err != nil {
 		response.Failed(ctx, response.ErrDB)
 		return
 	}
-	service.SendOperationLog(userName, userID, "Bucket", fmt.Sprintf("删除存储桶{ %s }", bucket.Name))
+	service.SendOperationLog(ctx, "Bucket", fmt.Sprintf("删除存储桶{ %s }", bucket.Name))
 	response.Success(ctx, "create bucket successfully", 1)
+
+}
+
+func GetBucketCount(ctx *gin.Context) {
+	count, err := service.GetBucketCount()
+	if err != nil {
+		response.Failed(ctx, response.ErrDB)
+		return
+	}
+	response.Success(ctx, "", int(count))
 
 }

@@ -21,7 +21,8 @@ func insertPhoto(phote model.Photo) error {
 }
 
 func deletePhoto(photo model.Photo) error {
-	return global.DBClient.Delete(photo).Error
+	//NOTE: 为什么bucket删不需要
+	return global.DBClient.Where("uuid = ?", photo.UUID).Delete(photo).Error
 }
 
 func isPhotoOutOfCapacity() bool {
@@ -38,4 +39,10 @@ func GetPhotoByUUID(uuid string) (model.Photo, bool) {
 	var photo model.Photo
 	result := global.DBClient.Where("uuid = ?", uuid).First(&photo)
 	return photo, !errors.Is(result.Error, gorm.ErrRecordNotFound)
+}
+
+func GetPhotoCount() (int64, error) {
+	var count int64
+	result := global.DBClient.Model(&model.Photo{}).Count(&count)
+	return count, result.Error
 }

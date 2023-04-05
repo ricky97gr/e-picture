@@ -10,4 +10,6 @@ func (r *Router) InitPhotoRouter() {
 	photoGroup.Use(middleware.Auth())
 	photoGroup.GET("/list", v1.ListPhoto)
 	photoGroup.DELETE("/delete", v1.DeletePhoto)
+	photoGroup.POST("/upload", v1.UpLoadPhoto)
+	photoGroup.GET("/count", v1.GetPhotoCount)
 }

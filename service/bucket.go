@@ -121,3 +121,9 @@ func deleteStoreBucket(bucketName string) error {
 func addPolicyToBucket(bucketName, policy string) error {
 	return global.MinioClient.SetBucketPolicy(context.Background(), bucketName, policy)
 }
+
+func GetBucketCount() (int64, error) {
+	var count int64
+	result := global.DBClient.Model(&model.Bucket{}).Count(&count)
+	return count, result.Error
+}

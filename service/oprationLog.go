@@ -4,17 +4,22 @@ import (
 	"my-admin/global"
 	"my-admin/model"
 	"my-admin/pkg/uuid"
-	"time"
+
+	"github.com/gin-gonic/gin"
+	// "time"
 )
 
-func SendOperationLog(userName, userID, moduleName, message string) {
+func SendOperationLog(ctx *gin.Context, moduleName, message string) {
+	userName := ctx.Request.Header.Get("userName")
+	userID := ctx.Request.Header.Get("userID")
 	log := &model.OperationLog{
-		UUID:       uuid.GetUUID(),
-		CreateTime: time.Now(),
-		Module:     moduleName,
-		UserName:   userName,
-		UserID:     userID,
-		Message:    message,
+		UUID: uuid.GetUUID(),
+		// CreateTime: time.Now(),
+		Module:   moduleName,
+		UserName: userName,
+		UserID:   userID,
+		Message:  message,
+		IP:       ctx.ClientIP(),
 	}
 	insertOperationLog(*log)
 }
@@ -34,4 +39,10 @@ func insertOperationLog(log model.OperationLog) {
 
 func deleteOperationLogByUUID(uuid string) {
 	//global.DBClient.Delete()
+}
+
+func GetOperationCount() (int64, error) {
+	var count int64
+	result := global.DBClient.Model(&model.OperationLog{}).Count(&count)
+	return count, result.Error
 }

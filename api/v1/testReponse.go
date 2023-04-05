@@ -8,6 +8,6 @@ import (
 )
 
 func TestRespose(ctx *gin.Context) {
-	service.SendOperationLog("admin", "1234567", "Test", "测试日志")
+	service.SendOperationLog(ctx, "Test", "测试日志")
 	response.Success(ctx, "test successfully", 1)
 }
