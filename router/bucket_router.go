@@ -13,4 +13,5 @@ func (r *Router) InitBucketRouter() {
 	bucketGroup.DELETE("/delete", v1.DeleteBucket)
 	bucketGroup.GET("/list", v1.GetBucketList)
 	bucketGroup.GET("/count", v1.GetBucketCount)
+	bucketGroup.GET("/usedSize", v1.GetBucketUsedSize)
 }

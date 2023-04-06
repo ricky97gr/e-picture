@@ -12,6 +12,7 @@ type Photo struct {
 	Url        string          `json:"url" gorm:"column:url"`
 	Status     string          `json:"status" gorm:"column:status"`
 	CreateTime *time.LocalTime `json:"createTime" gorm:"column:createTime; autoCreateTime"`
+	Size       int64           `json:"size" gorm:"column:size"`
 }
 
 func (Photo) TableName() string {

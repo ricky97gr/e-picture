@@ -36,6 +36,12 @@ func UpLoadPhoto(ctx *gin.Context) {
 			return
 		}
 	}
+	bucket, err := service.GetBucketByName(bucketName)
+	if err != nil {
+		fmt.Printf("failed to get bucket by bucketName:%s, err:%+v\n", bucketName, err)
+		response.Failed(ctx, response.ErrDB, "查询桶信息异常")
+		return
+	}
 
 	files := form.File["file"]
 	//BUG: 上传多个文件时有可能会出现同名的照片
@@ -50,13 +56,23 @@ func UpLoadPhoto(ctx *gin.Context) {
 		if photoName != "" {
 			newFile = photoName + path.Ext(file.Filename)
 		}
-
+		if service.IsPhotoOutOfCapacity(bucket, file.Size) {
+			response.Failed(ctx, response.ErrDB, "桶容量超出上限")
+			return
+		}
 		service.CreatePhoto(model.Photo{
 			UUID:       uuid.GetUUID(),
 			Name:       newFile,
 			BucketName: bucketName,
+			Size:       file.Size,
 			Url:        fmt.Sprintf("http://%s:%d/%s/%s", global.Config.Minio.IP, global.Config.Minio.Port, bucketName, newFile),
 		})
+		err = service.AddPhotoCapacityByBucketName(bucketName, file.Size)
+		if err != nil {
+			global.Logger.Errorf("failed to update(add photo) bucket used info, err:%+v\n", err)
+			response.Failed(ctx, response.ErrDB)
+			return
+		}
 		_, err = global.MinioClient.PutObject(context.Background(), bucketName, newFile, f, file.Size, minio.
 			PutObjectOptions{})
 		if err != nil {
@@ -89,6 +105,10 @@ func DeletePhoto(ctx *gin.Context) {
 	err = service.DeletePhoto(photo)
 	if err != nil {
 		global.Logger.Errorf("failed to delete file record from db, info:%+v, err:%+v\n", photo, err)
+	}
+	err = service.DeletePhotoCapacityByBucketName(photo.BucketName, photo.Size)
+	if err != nil {
+		global.Logger.Errorf("failed to update(delete photo) bucket used info, err:%+v\n", err)
 	}
 	service.SendOperationLog(ctx, "Photo", fmt.Sprintf("删除了照片 %s", photo.Name))
 	response.Success(ctx, "删除成功", 1)

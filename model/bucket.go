@@ -12,8 +12,8 @@ type Bucket struct {
 	Status       string          `json:"status" gorm:"column:status"`
 	OwnerID      string          `json:"ownerID" gorm:"column:ownerID"`
 	OwnerName    string          `json:"ownerName" gorm:"column:ownerName"`
-	TotalSize    string          `json:"totalSize" gorm:"column:totalSize"`
-	UsedSize     string          `json:"usedSize" gorm:"column:usedSize"`
+	TotalSize    int64           `json:"totalSize" gorm:"column:totalSize"`
+	UsedSize     int64           `json:"usedSize" gorm:"column:usedSize"`
 	TotalNumber  int32           `json:"totalNumber" gorm:"column:totalNumber"`
 	UsedNumber   int32           `json:"usedNumber" gorm:"column:usedNumber"`
 	CreateTime   *time.LocalTime `json:"createTime" gorm:"column:createTime; autoCreateTime"`

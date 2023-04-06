@@ -89,19 +89,23 @@ func getBucketCount() int64 {
 	return result.RowsAffected
 }
 
+func updateBucketUsedInfo(bucket model.Bucket) error {
+	return global.DBClient.Model(&model.Bucket{}).Where("name = ?", bucket.Name).Updates(model.Bucket{UsedNumber: bucket.UsedNumber, UsedSize: bucket.UsedSize}).Error
+}
+
 func isBucketExist(bucketName string) bool {
 	var bucket model.Bucket
 	result := global.DBClient.Where("name = ?", bucketName).First(&bucket)
 	return !errors.Is(result.Error, gorm.ErrRecordNotFound)
 }
 
-func getBucketByID(id int64) *model.Bucket {
+func GetBucketByName(name string) (model.Bucket, error) {
 	var bucket model.Bucket
-	result := global.DBClient.Find(&model.Bucket{}).Where("id = ?", id).First(&bucket)
+	result := global.DBClient.Find(&model.Bucket{}).Where("name = ?", name).First(&bucket)
 	if result.Error != nil {
-		return nil
+		return bucket, result.Error
 	}
-	return &bucket
+	return bucket, nil
 }
 
 func createStoreBucket(bucketName string) error {
@@ -126,4 +130,41 @@ func GetBucketCount() (int64, error) {
 	var count int64
 	result := global.DBClient.Model(&model.Bucket{}).Count(&count)
 	return count, result.Error
+}
+
+func AddPhotoCapacityByBucketName(bucketName string, photoSize int64) error {
+	var bucket model.Bucket
+	result := global.DBClient.Model(&model.Bucket{}).Where("name = ?", bucketName).First(&bucket)
+	if result.Error != nil {
+		return result.Error
+	}
+	bucket.UsedNumber = bucket.UsedNumber + 1
+	bucket.UsedSize = bucket.UsedSize + photoSize
+	return updateBucketUsedInfo(bucket)
+}
+
+func DeletePhotoCapacityByBucketName(bucketName string, photoSize int64) error {
+	var bucket model.Bucket
+	result := global.DBClient.Model(&model.Bucket{}).Where("name = ?", bucketName).First(&bucket)
+	if result.Error != nil {
+		return result.Error
+	}
+	bucket.UsedNumber = bucket.UsedNumber - 1
+	bucket.UsedSize = bucket.UsedSize - photoSize
+	//NOTE: 应该不需要，是个保障
+	if bucket.UsedSize < 0 {
+		bucket.UsedSize = 0
+	}
+	return updateBucketUsedInfo(bucket)
+
+}
+
+func GetBucketUsedSize() (int64, error) {
+	var sizes []int64
+	result := global.DBClient.Model(&model.Bucket{}).Pluck("usedSize", &sizes)
+	sum := int64(0)
+	for _, size := range sizes {
+		sum = sum + size
+	}
+	return sum, result.Error
 }
