@@ -6,7 +6,7 @@ import (
 
 type Bucket struct {
 	Name         string          `json:"name"`
-	TotalSize    string          `json:"totalSize"`
+	TotalSize    int64           `json:"totalSize"`
 	CapacityMode string          `json:"capacityMode"`
 	TotalNumber  int32           `json:"totalNumber"`
 	Status       string          `json:"status"`

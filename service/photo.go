@@ -25,7 +25,19 @@ func deletePhoto(photo model.Photo) error {
 	return global.DBClient.Where("uuid = ?", photo.UUID).Delete(photo).Error
 }
 
-func isPhotoOutOfCapacity() bool {
+func IsPhotoOutOfCapacity(bucket model.Bucket, photoSize int64) bool {
+	switch bucket.CapacityMode {
+	case "size":
+		if bucket.UsedSize+photoSize > bucket.TotalSize {
+			return true
+		}
+
+	case "number":
+		if bucket.UsedNumber >= bucket.TotalNumber {
+			return true
+		}
+		//TODO:debult
+	}
 	return false
 }
 

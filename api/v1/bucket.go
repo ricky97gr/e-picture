@@ -74,3 +74,16 @@ func GetBucketCount(ctx *gin.Context) {
 	response.Success(ctx, "", int(count))
 
 }
+
+func GetBucketUsedSize(ctx *gin.Context) {
+	count, err := service.GetBucketUsedSize()
+	if err != nil {
+		response.Failed(ctx, response.ErrDB)
+		return
+	}
+	response.Success(ctx, "", int(count))
+}
+
+func GetBucketInfo(ctx *gin.Context) {
+
+}

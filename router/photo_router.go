@@ -12,4 +12,5 @@ func (r *Router) InitPhotoRouter() {
 	photoGroup.DELETE("/delete", v1.DeletePhoto)
 	photoGroup.POST("/upload", v1.UpLoadPhoto)
 	photoGroup.GET("/count", v1.GetPhotoCount)
+	photoGroup.GET("/info", v1.GetPhotoInfo)
 }
