@@ -90,6 +90,11 @@ func GetBucketInfo(ctx *gin.Context) {
 		response.Failed(ctx, response.ErrDB, "bucketName不能为空")
 		return
 	}
-	if service.GetBucketByName()
+	result, err := service.GetBucketByName(bucketName)
+	if err != nil{
+		response.Failed(ctx, response.ErrDB, "数据库有误")
+		return
+	}
+	response.Success(ctx, result, 1)
 
 }

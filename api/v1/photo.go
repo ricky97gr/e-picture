@@ -130,5 +130,15 @@ func GetPhotoCount(ctx *gin.Context) {
 }
 
 func GetPhotoInfo(ctx *gin.Context) {
-
+	uuid := ctx.Param("uuid")
+	if uuid == ""{
+		response.Failed(ctx, response.ErrStruct, "failed to get photo by uuid")
+		return
+	}
+	photo, ok := service.GetPhotoByUUID(uuid)
+	if !ok{
+		response.Failed(ctx, response.ErrDB)
+		return
+	}
+	response.Success(ctx, photo, 1)
 }
