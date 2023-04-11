@@ -14,5 +14,5 @@ func (r *Router) InitBucketRouter() {
 	bucketGroup.GET("/list", v1.GetBucketList)
 	bucketGroup.GET("/count", v1.GetBucketCount)
 	bucketGroup.GET("/usedSize", v1.GetBucketUsedSize)
-	bucketGroup.GET("/info", v1.GetBucketInfo)
+	bucketGroup.GET("/:bucketName/info", v1.GetBucketInfo)
 }

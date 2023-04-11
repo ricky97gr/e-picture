@@ -85,5 +85,11 @@ func GetBucketUsedSize(ctx *gin.Context) {
 }
 
 func GetBucketInfo(ctx *gin.Context) {
+	bucketName := ctx.Param("bucketName")
+	if bucketName == ""{
+		response.Failed(ctx, response.ErrDB, "bucketName不能为空")
+		return
+	}
+	if service.GetBucketByName()
 
 }
