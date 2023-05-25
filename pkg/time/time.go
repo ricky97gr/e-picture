@@ -7,6 +7,8 @@ import (
 	"fmt"
 )
 
+const StandardTime = "2006-01-02 15:04:05"
+
 type LocalTime time.Time
 
 func (t *LocalTime) MarshalJSON() ([]byte, error) {
