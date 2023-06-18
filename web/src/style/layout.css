@@ -1,0 +1,47 @@
+.common-layout {
+    height: 100%;
+    width: 100%;
+}
+
+.el-header {
+    background-color: #3a5151;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(241, 241, 241);
+}
+
+.el-aside {
+    background-color: #666666;
+    /* border-right: solid;
+    border-right-width: 1px;
+    border-right-color: gray; */
+}
+
+.el-footer {
+    background-color: rgb(255, 255, 255);
+    height: 30px;
+    /* border-top: solid; */
+    /* border-top-width: 1px;
+    border-top-color: gray; */
+    background-color: #CCCCCC;
+
+}
+
+.el-container {
+    height: 100%;
+}
+
+.el-main {
+    padding: 15px;
+    background-color: #CCCCCC;
+}
+
+.el-card {
+    height: 100%;
+    background-color: #e0e0e0;
+}
+
+.el-table {
+    --el-table-border-color: black;
+    text-align: center;
+}
