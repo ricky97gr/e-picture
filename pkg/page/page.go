@@ -13,15 +13,19 @@ type Pagination struct {
 	PageSize  int       `json:"pageSize"`
 	StartTime time.Time `json:"startTime"`
 	EndTime   time.Time `json:"endTime"`
+	Sort      string    `json:"sort"`
 }
 
-func GetPagination(ctx *gin.Context) {
+func GetPagination(ctx *gin.Context) *Pagination {
 	page, err := strconv.Atoi(ctx.Query("page"))
 	if err != nil {
-		return
+		return nil
 	}
 
 	pageSize, err := strconv.Atoi(ctx.Query("pageSize"))
+	if err != nil {
+		return nil
+	}
 	startTime := ctx.Query("startTime")
 	endTime := ctx.Query("endTime")
 	fmt.Println(startTime, endTime)
@@ -31,5 +35,5 @@ func GetPagination(ctx *gin.Context) {
 	theEndTime, _ := time.ParseInLocation(timeLayout, endTime, loc)
 	pagination := &Pagination{Page: page, PageSize: pageSize, StartTime: theStartTime, EndTime: theEndTime}
 	fmt.Printf("page:%+v\n", pagination)
-
+	return pagination
 }
